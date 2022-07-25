@@ -1,32 +1,136 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import '../App.css';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import WatchIcon from '@mui/icons-material/Watch';
-import submarinerVideo from './assets/submariner.mp4'
-// import submarinerVideo from './submariner.mp4'
-import { createTheme } from '@mui/material/styles';
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import CameraIcon from '@mui/icons-material/PhotoCamera';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-class Watches extends Component {
-  render() {
-    return (
-      <div className="Watches">
-        <h3>Watches</h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tristique nisl a ante maximus euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam dolor risus, pellentesque at congue ac, ullamcorper quis dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam imperdiet nisi justo, in aliquam dui auctor eget. Cras sodales fermentum purus, non fringilla diam tempor quis. Fusce at nulla eget lorem porta aliquet. Sed sagittis purus lorem, et eleifend neque cursus mollis. In placerat, ipsum in molestie faucibus, orci purus egestas ex, ac sodales ipsum dolor quis lectus. Nullam dolor tellus, condimentum vitae elit et, tincidunt venenatis urna. Proin non lacus tortor. Aenean sit amet dui sit amet ligula molestie placerat sit amet vitae erat. Donec sit amet diam eget risus facilisis imperdiet vel vel velit. Pellentesque ut scelerisque lorem, sit amet ornare diam. Quisque porttitor molestie velit nec laoreet.
-  
-          Quisque non ex mollis, lacinia justo et, tempus nisl. Aliquam lobortis odio sed neque vestibulum, nec sagittis quam fermentum. In hac habitasse platea dictumst. Integer egestas quam at orci interdum rutrum. Mauris a justo dolor. Donec volutpat velit in tellus placerat varius. Aliquam ornare ac augue nec dictum. Nunc tristique, ex in viverra facilisis, nulla sapien lacinia erat, vel dictum felis massa in urna. Aliquam lectus nulla, vehicula ac bibendum vel, rhoncus sit amet lacus. Fusce eleifend neque fermentum sapien dictum scelerisque.
-  
-          Fusce eget tellus ut nibh sodales commodo. Maecenas molestie malesuada iaculis. Nullam semper turpis mi. Proin in interdum dui, sit amet condimentum eros. Curabitur mollis, mauris et tempor laoreet, tortor ante dictum tortor, vitae auctor ex ligula vitae metus. Nullam egestas eget lorem in rutrum. Aliquam at egestas neque.
-  
-          Aliquam augue tortor, commodo sit amet libero eget, finibus elementum diam. Nullam volutpat maximus aliquet. Aenean accumsan mi a ex venenatis, eget molestie nunc semper. Aenean sollicitudin ipsum lacinia, lobortis tortor vitae, congue felis. Curabitur aliquet ligula ut tellus laoreet tempor. Maecenas tellus nulla, ultricies vitae tristique a, congue at diam. Fusce rutrum vitae nunc sed pretium. Donec laoreet, erat ut faucibus bibendum, mi quam aliquam quam, et mollis odio turpis sit amet est. Donec porttitor magna in tempor vestibulum. Cras imperdiet turpis felis, sit amet tristique metus lobortis ac. Cras malesuada accumsan nibh vitae accumsan. Nunc interdum eros id libero consequat, id finibus nulla dignissim. Cras efficitur velit ac massa ultrices, id accumsan ante viverra. Duis tempor mi leo, sit amet blandit lorem fringilla at. Nam pulvinar sollicitudin mattis.
-  
-          Nulla at massa quis orci tincidunt convallis vel at est. Curabitur eu tempus libero, sed gravida dolor. Vestibulum condimentum, ante posuere consectetur sodales, mauris ligula varius mauris, a accumsan diam mi a nisi. Donec vitae enim quis elit maximus fringilla. Proin sit amet tellus orci. Suspendisse in imperdiet lorem. Suspendisse ut tristique turpis. Sed ac accumsan nisl, vitae pulvinar diam. Proin non lectus mi. Duis tincidunt nibh id sapien auctor, sit amet tincidunt nibh ullamcorper. Proin sagittis nibh id maximus volutpat. Integer sollicitudin congue interdum. Donec tempus aliquet mi, gravida imperdiet dui commodo id. Maecenas sodales laoreet neque ac consectetur. Cras non ullamcorper tortor. Mauris ornare lorem non ex ornare dapibus.
-      </div>
-    );  
-  }
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
 
-export default Watches;
+const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const theme = createTheme();
+
+export default function Album() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <main>
+        {/* Hero unit */}
+        <Box
+          sx={{
+            bgcolor: 'background.paper',
+            pt: 8,
+            pb: 6,
+          }}
+        >
+          <Container maxWidth="sm">
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              Watches
+            </Typography>
+            <Typography
+              component="h2"
+              variant="h4"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              The Collection
+            </Typography>
+            <Typography variant="h6" align="center" color="text.secondary" paragraph>
+              William's offers a wide assortment of watches to suit any wrist. Discover the broad selection of William's watches to find a perfect combination of style and functionality.
+            </Typography>
+            {/* <Stack
+              sx={{ pt: 4 }}
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Button variant="contained">Main call to action</Button>
+              <Button variant="outlined">Secondary action</Button>
+            </Stack> */}
+          </Container>
+        </Box>
+        <Container sx={{ py: 8 }} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            {cards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      // 16:9
+                      pt: '56.25%',
+                    }}
+                    image="https://source.unsplash.com/random"
+                    alt="random"
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Heading
+                    </Typography>
+                    <Typography>
+                      This is a media card. You can use this section to describe the
+                      content.
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small">View</Button>
+                    <Button size="small">Edit</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </main>
+      {/* Footer */}
+      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+        <Typography variant="h6" align="center" gutterBottom>
+          Footer
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="text.secondary"
+          component="p"
+        >
+          Something here to give the footer a purpose!
+        </Typography>
+        <Copyright />
+      </Box>
+      {/* End footer */}
+    </ThemeProvider>
+  );
+}
