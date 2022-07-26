@@ -16,8 +16,6 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Client, Environment, ApiError } from "square";
-
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -31,9 +29,9 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // the catalog, an array
 
-const theme = createTheme();
+const theme = createTheme(); // MUI
 
 export default function Album() {
   return (
