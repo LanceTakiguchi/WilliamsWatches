@@ -1,0 +1,5 @@
+*.js
+*.js.map
+
+# Ignore built ts files
+dist/**/*

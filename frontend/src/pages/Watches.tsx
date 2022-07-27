@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getCatalog } from '../callbackend/request';
+import { useEffect, useState } from 'react';
 
 function Copyright() {
   return (
@@ -34,6 +36,30 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // the catalog, an array
 const theme = createTheme(); // MUI
 
 export default function Album() {
+
+  const [catalog, setCatalog] = useState<any[]>([]); // TODO: type catalog
+
+  useEffect(() => {
+    try {
+      const fetchCatalog = async () => {
+        const data = await getCatalog();
+        console.log('what is data', typeof data)
+        // const json = JSON.parse(data);
+
+        setCatalog(data.objects);
+        // console.log('got the catalog', json)
+      }
+
+      fetchCatalog().catch(console.error);
+    } catch (err) {
+      console.log('error:', err)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('catalog update:', catalog)
+  }, [catalog])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -82,8 +108,9 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {/* make a helper filter function and run it back on the request.ts */}
+            {catalog.filter(item => item?.type == 'ITEM').map((card) => (
+              <Grid item key={card.id} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
@@ -97,18 +124,21 @@ export default function Album() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
-                    </Typography>
+                    {card?.itemData?.name ?
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {card.itemData.name}
+                      </Typography>
+                      : null}
+                    {card?.itemData?.description ?
+                      <Typography>
+                        {card.itemData.description}
+                      </Typography>
+                      : null}
                   </CardContent>
-                  <CardActions>
+                  {/* <CardActions>
                     <Button size="small">View</Button>
                     <Button size="small">Edit</Button>
-                  </CardActions>
+                  </CardActions> */}
                 </Card>
               </Grid>
             ))}
