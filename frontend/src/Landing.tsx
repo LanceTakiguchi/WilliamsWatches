@@ -24,6 +24,10 @@ function Landing () {
       <video loop={true} autoPlay={true} muted={true} preload={"auto"} className="landing-video" playsInline={true}>
           <source src={submarinerVideo} type="video/mp4" />
       </video>
+      <div className="Title">
+        <h1>SUBMARINER</h1>
+        <h3>The reference among divers' watches</h3>
+      </div>
     </div>
   );
 }
