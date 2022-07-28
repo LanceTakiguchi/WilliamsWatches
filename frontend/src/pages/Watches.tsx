@@ -59,7 +59,7 @@ export default function WatchesCatalog() {
       const fetchCatalog = async () => {
         const data = await getCatalog('ITEM,IMAGE');
         // console.log('what is data', typeof data)
-        console.log('what is data', data)
+        console.log('what is catalog data', data)
         // const json = JSON.parse(data);
 
         if (data && data.objects) {
@@ -81,7 +81,8 @@ export default function WatchesCatalog() {
   useEffect(() => {
     console.log('there has been a series change')
     try {
-      if (series && series.length > 0) {
+      if (series && series.variations.length > 0) {
+        console.log('we have enough of a series')
         const fetchInventory = async () => {
           const data = await getInventory(series.variations.map((variant: { id: string; }) => variant.id));
           // console.log('what is data', typeof data)
@@ -213,6 +214,10 @@ export default function WatchesCatalog() {
                         ${card.itemVariationData.priceMoney.amount * .01}
                       </Typography>
                       : null}
+                      <Typography sx={inventory.find(item => item.catalogObjectId === card.id)?.state == 'IN_STOCK' ? { color: 'success.main' } : { color: 'disabled.main' }}>
+                      {/* textDecoration: "line-through" */}
+                        {inventory.find(item => item.catalogObjectId === card.id)?.state == 'IN_STOCK' ? 'In Stock' : 'Out of Stock'}
+                      </Typography>
                   </CardContent>
                   <CardActions>
                     <Button size="large">Add to cart</Button>

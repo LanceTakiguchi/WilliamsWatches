@@ -29,17 +29,6 @@ import Watches from './pages/Watches';
 
 import  { HashRouter, BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
-
-// const pages = [
-//   {
-//     name: 'History',
-//     path: './pages/Watches',
-//     component: 'HistoryPage'
-//   }, {
-//     name: 'Watches',
-//     path: './pages/History',
-//     component: "WatchesPage"
-//   }];
 const pages = ['History', 'Watches'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
