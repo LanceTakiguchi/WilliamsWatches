@@ -36,6 +36,39 @@ app.get("/catalog", async (req, res) => {
       }
 })
 
+app.get("/batchInventory", async (req, res) => {
+    try {
+        const catalogObjectIdsString = req.query?.ids && typeof req.query?.ids === 'string' ? req.query.ids : undefined;
+
+        const catalogObjectIds = catalogObjectIdsString.split(',');
+        if (!(catalogObjectIdsString && catalogObjectIds && catalogObjectIds.length > 0 )) {
+            res.send('error 400: invalid or missing ids')
+        }
+
+        const response = await client.inventoryApi.batchRetrieveInventoryCounts({
+            // catalogObjectIds: [
+            //   'I5MRGXSYMBUKCF2YKLWSOWZD',
+            //   'MTHPI7YFVLAXIW3PVSRLK2OR',
+            //   'T2FNAH6QPWCG4OWB54XKVXXD'
+            // ]
+            catalogObjectIds
+          });
+        if (response.result && response.statusCode === 200) {
+            console.log('200')
+            const result = response.result;
+            console.log('square inventory');
+            console.log(toJson(result))
+            res.send(toJson(result))
+        } else {
+            console.log('response error', response.statusCode);
+            res.send({})
+        }
+      } catch (err) {
+        console.log(err);
+        res.send(err)
+      }
+})
+
 // start the Express server
 app.listen( port, () => {
     // tslint:disable-next-line:no-console

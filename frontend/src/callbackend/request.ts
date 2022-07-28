@@ -36,10 +36,35 @@ export const getCatalog = async (types?: string) => {
     console.log('catalog error:', err);
     return {}
   }
+}
+
+export const getInventory = async (ids: string[]) => {
+  try {
+    if (!(ids && ids.length > 0)) {
+      console.log('inventory error: missing ids')
+      return {}
+    }
+
+    const url = `${baseUrl}/batchInventory?ids=${ids.join()}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok && response.status == 200) {
+      const inventory = await response.json();
+      console.log('getInventory 200')
+      console.log(inventory)
+      return inventory
+    } else {
+      console.log('inventory error:', response.status)
+      return {}
+    }
   
-  // request(`${baseUrl}/catalog`, function (error, response, body) {
-  //   if (!error && response.statusCode == 200) {
-  //     console.log('catalog', body);
-  //   }
-  // })
+  } catch (err) {
+    console.log('inventory error:', err);
+    return {}
+  }
 }

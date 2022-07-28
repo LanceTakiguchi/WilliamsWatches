@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getCatalog } from '../callbackend/request';
+import { getCatalog, getInventory } from '../callbackend/request';
 import { useEffect, useState } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
 import { SystemSecurityUpdateSharp } from '@mui/icons-material';
@@ -38,11 +38,13 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // the catalog, an array
 const theme = createTheme(); // MUI
 
 // TODO: Read URL and load particular product accordingly
+// TODO: Add a back button - clearing series
 
 export default function WatchesCatalog() {
 
   const [catalog, setCatalog] = useState<any[]>([]); // TODO: type catalog
   const [series, setSeries] = useState<{ [key: string]: any }>({}); // TODO: type series
+  const [inventory, setInventory] = useState<any[]>([]); // TODO: type inventory
 
   const changeSeries = (seriesId: string) => {
     if (catalog && catalog.length > 0) {
@@ -75,6 +77,29 @@ export default function WatchesCatalog() {
   useEffect(() => {
     console.log('catalog update:', catalog)
   }, [catalog])
+
+  useEffect(() => {
+    console.log('there has been a series change')
+    try {
+      if (series && series.length > 0) {
+        const fetchInventory = async () => {
+          const data = await getInventory(series.variations.map((variant: { id: string; }) => variant.id));
+          // console.log('what is data', typeof data)
+          // console.log('what is the inventory?:', data)
+          // const json = JSON.parse(data);
+
+          if (data && data.counts) {
+            console.log('got the inventory:', data.counts)
+            setInventory(data.counts);
+          }
+        }
+
+        fetchInventory().catch(console.error);
+      }
+    } catch (err) {
+      console.log('error:', err)
+    }
+  }, [series])
 
   return (
     <ThemeProvider theme={theme}>
