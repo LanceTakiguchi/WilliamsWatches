@@ -17,6 +17,8 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCatalog } from '../callbackend/request';
 import { useEffect, useState } from 'react';
+import CardActionArea from '@mui/material/CardActionArea';
+import { SystemSecurityUpdateSharp } from '@mui/icons-material';
 
 function Copyright() {
   return (
@@ -35,9 +37,20 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // the catalog, an array
 
 const theme = createTheme(); // MUI
 
-export default function Album() {
+// TODO: Read URL and load particular product accordingly
+
+export default function WatchesCatalog() {
 
   const [catalog, setCatalog] = useState<any[]>([]); // TODO: type catalog
+  const [series, setSeries] = useState<{ [key: string]: any }>({}); // TODO: type series
+
+  const changeSeries = (seriesId: string) => {
+    if (catalog && catalog.length > 0) {
+      const result = catalog.find(item => item.id === seriesId);
+      result?.itemData && setSeries(result.itemData);
+      console.log('series:', result?.itemData)
+    }
+  }
 
   useEffect(() => {
     try {
@@ -112,7 +125,40 @@ export default function Album() {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {/* make a helper filter function and run it back on the request.ts */}
-            {catalog && catalog.filter(item => item?.type == 'ITEM').map((card) => (
+            {!(series?.variations && series?.variations.length > 0) && catalog && catalog.filter(item => item?.type == 'ITEM').map((card) => (
+              <Grid item key={card.id} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <CardActionArea
+                    onClick={() => changeSeries(card.id)}
+                  >
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        // 16:9
+                        // pt: '56.25%',
+                      }}
+                      image={catalog.find(x => x.id == card?.itemData?.imageIds[0])?.imageData?.url}
+                      alt="random"
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      {card?.itemData?.name ?
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {card.itemData.name}
+                        </Typography>
+                        : null}
+                      {card?.itemData?.description ?
+                        <Typography>
+                          {card.itemData.description}
+                        </Typography>
+                        : null}
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+            {series && series?.variations && series?.variations.length > 0 && series?.variations.map((card: any) => (
               <Grid item key={card.id} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -123,25 +169,30 @@ export default function Album() {
                       // 16:9
                       // pt: '56.25%',
                     }}
-                    image={catalog.find(x => x.id == card?.itemData?.imageIds[0])?.imageData?.url}
+                    image={catalog.find(x => x.id == series?.imageIds[0])?.imageData?.url}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    {card?.itemData?.name ?
+                    {series?.name && card?.itemVariationData?.name ?
                       <Typography gutterBottom variant="h5" component="h2">
-                        {card.itemData.name}
+                        {series.name} {card.itemVariationData.name}
                       </Typography>
                       : null}
-                    {card?.itemData?.description ?
+                    {card?.itemVariationData?.sku ?
                       <Typography>
-                        {card.itemData.description}
+                        sku: {card.itemVariationData.sku}
+                      </Typography>
+                      : null}
+                    {card?.itemVariationData?.priceMoney?.amount ?
+                      <Typography>
+                        ${card.itemVariationData.priceMoney.amount * .01}
                       </Typography>
                       : null}
                   </CardContent>
-                  {/* <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions> */}
+                  <CardActions>
+                    <Button size="large">Add to cart</Button>
+                    {/* <Button size="small">Edit</Button> */}
+                  </CardActions>
                 </Card>
               </Grid>
             ))}

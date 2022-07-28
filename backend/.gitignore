@@ -3,3 +3,4 @@
 
 # Ignore built ts files
 dist/**/*
+sandboxapikey
