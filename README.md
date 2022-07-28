@@ -17,3 +17,7 @@ Practice E-commerce website for stickers
 
 ## Notes
 * Occasionally have to add the SQUARE_ACCESS_TOKEN to the backend again
+
+## APIs used
+* Catalog
+* Inventory

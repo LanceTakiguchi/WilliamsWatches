@@ -1,3 +1,15 @@
+/* Navbar */
+.logo {
+  text-decoration: none;
+}
+.logo:visited {
+  color: inherit;
+}
+.logo.mobile {
+  display: flex;
+  align-items: center;
+}
+
 /* landing page */
 .Landing {
   display: flex;
