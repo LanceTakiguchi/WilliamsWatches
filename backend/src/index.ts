@@ -18,7 +18,8 @@ app.get( "/", ( req, res ) => {
 
 app.get("/catalog", async (req, res) => {
     try {
-        const response = await client.catalogApi.listCatalog();
+        const types = req.query?.types && typeof req.query?.types === 'string' ? req.query.types : undefined;
+        const response = await client.catalogApi.listCatalog(undefined, types);
         if (response.result && response.statusCode === 200) {
             console.log('200')
             const result = response.result;

@@ -42,12 +42,15 @@ export default function Album() {
   useEffect(() => {
     try {
       const fetchCatalog = async () => {
-        const data = await getCatalog();
-        console.log('what is data', typeof data)
+        const data = await getCatalog('ITEM,IMAGE');
+        // console.log('what is data', typeof data)
+        console.log('what is data', data)
         // const json = JSON.parse(data);
 
-        setCatalog(data.objects);
-        // console.log('got the catalog', json)
+        if (data && data.objects) {
+          console.log('got the catalog', data.objects)
+          setCatalog(data.objects);
+        }
       }
 
       fetchCatalog().catch(console.error);
@@ -109,7 +112,7 @@ export default function Album() {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {/* make a helper filter function and run it back on the request.ts */}
-            {catalog.filter(item => item?.type == 'ITEM').map((card) => (
+            {catalog && catalog.filter(item => item?.type == 'ITEM').map((card) => (
               <Grid item key={card.id} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -118,9 +121,9 @@ export default function Album() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      // pt: '56.25%',
                     }}
-                    image="https://source.unsplash.com/random"
+                    image={catalog.find(x => x.id == card?.itemData?.imageIds[0])?.imageData?.url}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>

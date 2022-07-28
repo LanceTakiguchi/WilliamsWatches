@@ -12,9 +12,10 @@
 
 const baseUrl = ''; // in local, it's just localhost:8080
 
-export const getCatalog = async () => {
+export const getCatalog = async (types?: string) => {
   try {
-    const response = await fetch(`${baseUrl}/catalog`, {
+    const url = `${baseUrl}/catalog${types ? `?types=${types}` : ""}`
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -24,6 +25,7 @@ export const getCatalog = async () => {
     if (response.ok && response.status == 200) {
       const catalog = await response.json();
       console.log('getCatalog 200')
+      console.log(catalog)
       return catalog
     } else {
       console.log('catalog error:', response.status)
