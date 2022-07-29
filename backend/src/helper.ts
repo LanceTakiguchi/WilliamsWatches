@@ -25,3 +25,16 @@ export function toJson(data: any) {
         return res;
     }
 }
+
+export const idempotencyGenerator = async () => {
+    const {
+        scrypt
+    } = await import('node:crypto');
+
+    // Using the factory defaults.
+    scrypt('password', 'salt', 64, (err, derivedKey) => {
+        if (err) throw err;
+        console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+        return derivedKey.toString('hex');
+    });
+};

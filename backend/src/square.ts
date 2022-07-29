@@ -1,6 +1,6 @@
 import express from "express";
 import { Client, Environment, ApiError } from "square";
-import { toJson } from "./helper";
+import { idempotencyGenerator, toJson } from "./helper";
 
 const app = express();
 const port = 8080; // default port to listen
@@ -68,6 +68,39 @@ app.get("/batchInventory", async (req, res) => {
         res.send(err)
       }
 })
+
+app.get('/idempotency', async (req, res) => {
+    try {
+        res.send(await idempotencyGenerator())
+    } catch (err) {
+        console.log(err);
+        res.send(err)
+    }
+})
+// https://developer.squareup.com/explorer/square/orders-api/create-order
+// try {
+//     const response = await client.ordersApi.createOrder({
+//       order: {
+//         locationId: 'LVN2REE3ETHXP',
+//         lineItems: [
+//           {
+//             name: 'Submariner Original, Black',
+//             quantity: '1',
+//             catalogObjectId: 'KGIJAH5GRGO2WVT53YRVHJGI',
+//             basePriceMoney: {
+//               amount: 10600,
+//               currency: 'USD'
+//             }
+//           }
+//         ]
+//       },
+//       idempotencyKey: '2da55989-2365-484e-b672-70e0358be621'
+//     });
+  
+//     console.log(response.result);
+//   } catch(error) {
+//     console.log(error);
+//   }
 
 // start the Express server
 app.listen( port, () => {

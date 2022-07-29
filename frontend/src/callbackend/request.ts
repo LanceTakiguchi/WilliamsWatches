@@ -68,3 +68,30 @@ export const getInventory = async (ids: string[]) => {
     return {}
   }
 }
+
+export const getIdempotency = async () => {
+  try {
+    const response = await fetch(`${baseUrl}idempotency`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (err) {
+    console.log('inventory error:', err);
+    return ''
+  }
+}
+
+// export const idempotencyGenerator = async () => {
+//   const {
+//       scrypt
+//   } = await import('node:crypto');
+
+//   // Using the factory defaults.
+//   scrypt('password', 'salt', 64, (err, derivedKey) => {
+//       if (err) throw err;
+//       console.log(derivedKey.toString('hex'));  // '3745e48...08d59ae'
+//       return derivedKey.toString('hex');
+//   });
+// };

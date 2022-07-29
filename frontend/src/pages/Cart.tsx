@@ -4,8 +4,12 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { CartContext } from '../Main';
 
 export default function Cart() {
+    const value = React.useContext(CartContext);  
+    console.log('context', value)
+
     return (
       <div className="Cart">
         <h3>Cart</h3>
