@@ -13,7 +13,7 @@ import Watches from './pages/Watches'
 import { HashRouter, BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Cart from './pages/Cart';
 import { getIdempotency } from './callbackend/request';
-import OrderIdContext from './Context';
+import { OrderIdContext, OrderIdempotencyContext, PaymentIdContext, PaymentIdempotencyContext } from './Context';
 
 function Main() {
   // useEffect(() => {
@@ -36,28 +36,54 @@ function Main() {
   // }, [])
 
   const [orderId, setOrderId] = useState('');
-  const changeOrderId = (value: string) => setOrderId(value);
+  const [orderIdempotency, setOrderIdempotency] = useState('');
+  const [paymentId, setPaymentId] = useState('');
+  const [paymentIdempotency, setPaymentIdempotency] = useState('');
+  const changeOrderId = (val: string) => setOrderId(val);
+  const changeOrderIdempotency = (val: string) => setOrderIdempotency(val);
+  const changePaymentId = (val: string) => setPaymentId(val);
+  const changePaymentIdempotency = (val: string) => setPaymentIdempotency(val);
 
   return (
-    <OrderIdContext.Provider 
+    <OrderIdContext.Provider
       value={{
         orderId,
         changeOrderId,
-      }}
-    >
-      <Router>
-        <div className="Main">
-          <header className="Main-header">
-            <Navbar />
-          </header>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/History" element={<History />} />
-            <Route path="/Watches" element={<Watches />} />
-            <Route path="/Cart" element={<Cart />} />
-          </Routes>
-        </div>
-      </Router>
+      }} >
+      <OrderIdempotencyContext.Provider
+        value={{
+          orderIdempotency,
+          changeOrderIdempotency,
+        }}
+      >
+        <PaymentIdContext.Provider
+          value={{
+            paymentId,
+            changePaymentId
+          }}
+        >
+          <PaymentIdempotencyContext.Provider
+            value={{
+              paymentIdempotency,
+              changePaymentIdempotency
+            }}
+          >
+            <Router>
+              <div className="Main">
+                <header className="Main-header">
+                  <Navbar />
+                </header>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/History" element={<History />} />
+                  <Route path="/Watches" element={<Watches />} />
+                  <Route path="/Cart" element={<Cart />} />
+                </Routes>
+              </div>
+            </Router>
+          </PaymentIdempotencyContext.Provider>
+        </PaymentIdContext.Provider>
+      </OrderIdempotencyContext.Provider>
     </OrderIdContext.Provider>
   );
 }

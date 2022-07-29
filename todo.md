@@ -13,3 +13,9 @@
 * Set order status
 * Inventory quantities
 * Add new entries into the catalog
+
+
+## Next todos
+* setup 3 more context
+* setup idempotency
+* create order
