@@ -16,9 +16,9 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCatalog, getInventory } from '../callbackend/request';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
-import { SystemSecurityUpdateSharp } from '@mui/icons-material';
+import OrderIdContext from '../Context';
 
 function Copyright() {
   return (
@@ -41,6 +41,7 @@ const theme = createTheme(); // MUI
 // TODO: Add a back button - clearing series
 
 export default function WatchesCatalog() {
+  const { orderId, changeOrderId } = useContext(OrderIdContext);
 
   const [catalog, setCatalog] = useState<any[]>([]); // TODO: type catalog
   const [series, setSeries] = useState<{ [key: string]: any }>({}); // TODO: type series
@@ -75,13 +76,11 @@ export default function WatchesCatalog() {
   }, [])
 
   useEffect(() => {
-    console.log('catalog update:', catalog)
-  }, [catalog])
-
-  useEffect(() => {
     console.log('there has been a series change')
+    changeOrderId('made it to the series page')
+    console.log('orderId:', orderId);
     try {
-      if (series && series.variations.length > 0) {
+      if (series && series.variations && series.variations.length > 0) {
         console.log('we have enough of a series')
         const fetchInventory = async () => {
           const data = await getInventory(series.variations.map((variant: { id: string; }) => variant.id));
@@ -91,6 +90,7 @@ export default function WatchesCatalog() {
 
           if (data && data.counts) {
             console.log('got the inventory:', data.counts)
+            // data.counts[0]
             setInventory(data.counts);
           }
         }
