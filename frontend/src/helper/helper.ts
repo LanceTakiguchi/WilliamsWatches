@@ -3,7 +3,7 @@
  * @param data response with bitints
  * @returns response with transformed bitints
  */
-export function toJson(data: any) {
+ export function toJson(data: any) {
     if (data !== undefined) {
         let intCount = 0;
         let repCount = 0;

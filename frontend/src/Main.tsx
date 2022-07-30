@@ -12,7 +12,6 @@ import Watches from './pages/Watches'
 
 import { HashRouter, BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Cart from './pages/Cart';
-import { getIdempotency } from './callbackend/request';
 import { OrderIdContext, OrderIdempotencyContext, PaymentIdContext, PaymentIdempotencyContext } from './Context';
 
 function Main() {

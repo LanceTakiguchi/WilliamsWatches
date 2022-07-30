@@ -18,7 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCatalog, getInventory } from '../callbackend/request';
 import { useContext, useEffect, useState } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
-import OrderIdContext from '../Context';
+import { OrderIdContext, OrderIdempotencyContext, PaymentIdempotencyContext } from '../Context';
 
 function Copyright() {
   return (
@@ -42,6 +42,8 @@ const theme = createTheme(); // MUI
 
 export default function WatchesCatalog() {
   const { orderId, changeOrderId } = useContext(OrderIdContext);
+  const { orderIdempotency, changeOrderIdempotency } = useContext(OrderIdempotencyContext);
+  const { paymentIdempotency, changePaymentIdempotency } = useContext(PaymentIdempotencyContext);
 
   const [catalog, setCatalog] = useState<any[]>([]); // TODO: type catalog
   const [series, setSeries] = useState<{ [key: string]: any }>({}); // TODO: type series
@@ -79,6 +81,8 @@ export default function WatchesCatalog() {
     console.log('there has been a series change')
     changeOrderId('made it to the series page')
     console.log('orderId:', orderId);
+    console.log('orderIdempotency:', orderIdempotency)
+    console.log('paymentIdempotency:', paymentIdempotency)
     try {
       if (series && series.variations && series.variations.length > 0) {
         console.log('we have enough of a series')

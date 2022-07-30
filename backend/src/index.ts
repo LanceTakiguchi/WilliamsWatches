@@ -1,6 +1,6 @@
 import express from "express";
 import { Client, Environment, ApiError } from "square";
-import { idempotencyGenerator, toJson } from "./helper";
+import { toJson } from "./helper";
 
 const app = express();
 const port = 8080; // default port to listen
@@ -12,9 +12,9 @@ const client = new Client({
 const { locationsApi, customersApi, ordersApi } = client;
 
 // define a route handler for the default home page
-app.get( "/", ( req, res ) => {
-    res.send( "status 200" );
-} );
+app.get("/", (req, res) => {
+    res.send("status 200");
+});
 
 app.get("/catalog", async (req, res) => {
     try {
@@ -30,10 +30,10 @@ app.get("/catalog", async (req, res) => {
             console.log('response error', response.statusCode);
             res.send({})
         }
-      } catch (err) {
+    } catch (err) {
         console.log(err);
         res.send(err)
-      }
+    }
 })
 
 app.get("/batchInventory", async (req, res) => {
@@ -41,7 +41,7 @@ app.get("/batchInventory", async (req, res) => {
         const catalogObjectIdsString = req.query?.ids && typeof req.query?.ids === 'string' ? req.query.ids : undefined;
 
         const catalogObjectIds = catalogObjectIdsString.split(',');
-        if (!(catalogObjectIdsString && catalogObjectIds && catalogObjectIds.length > 0 )) {
+        if (!(catalogObjectIdsString && catalogObjectIds && catalogObjectIds.length > 0)) {
             res.send('error 400: invalid or missing ids')
         }
 
@@ -52,7 +52,7 @@ app.get("/batchInventory", async (req, res) => {
             //   'T2FNAH6QPWCG4OWB54XKVXXD'
             // ]
             catalogObjectIds
-          });
+        });
         if (response.result && response.statusCode === 200) {
             console.log('200')
             const result = response.result;
@@ -63,15 +63,26 @@ app.get("/batchInventory", async (req, res) => {
             console.log('response error', response.statusCode);
             res.send({})
         }
-      } catch (err) {
+    } catch (err) {
         console.log(err);
         res.send(err)
-      }
+    }
 })
 
-app.get('/idempotency', async (req, res) => {
+app.get("/idempotency", async (req, res) => {
+    console.log('init /idempotency')
     try {
-        res.send(await idempotencyGenerator())
+        const {
+            scrypt
+        } = await import('node:crypto');
+
+        // Using the factory defaults.
+        scrypt('password', 'salt' + Math.random(), 64, async (err, derivedKey) => {
+            if (err) throw err;
+            const result = await derivedKey.toString('hex');
+            console.log("derivedKey.toString('hex'):", result);  // '3745e48...08d59ae'
+            res.send({idempotency: result})
+        });
     } catch (err) {
         console.log(err);
         res.send(err)
@@ -103,7 +114,7 @@ app.get('/idempotency', async (req, res) => {
 //   }
 
 // start the Express server
-app.listen( port, () => {
+app.listen(port, () => {
     // tslint:disable-next-line:no-console
-    console.log( `server started at http://localhost:${ port }` );
-} );
+    console.log(`server started at http://localhost:${port}`);
+});

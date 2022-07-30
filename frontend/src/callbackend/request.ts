@@ -1,5 +1,7 @@
 // import request from 'request';
 
+import { toJson } from "../helper/helper";
+
 // const baseUrl = 'localhost:8080'
 
 // export const catalog = async () => {
@@ -71,12 +73,22 @@ export const getInventory = async (ids: string[]) => {
 
 export const getIdempotency = async () => {
   try {
-    const response = await fetch(`${baseUrl}idempotency`, {
+    console.log('getIdempotency')
+    const response = await fetch(`${baseUrl}/idempotency`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     });
+    // console.log('getIdempotency response:', response)
+    if (response.ok && response.status == 200) {
+      const result = await response.json();
+      // console.log('getIdempotency result:', result)
+      return result.idempotency
+    } else {
+      console.log('catalog error:', response.status)
+      return {}
+    }
   } catch (err) {
     console.log('inventory error:', err);
     return ''
